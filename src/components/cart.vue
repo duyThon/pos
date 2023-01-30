@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import {api } from '@/api'
-import { mapMutations, mapState } from 'vuex'
+import { api } from '@/api'
+import { mapState } from 'vuex'
 import store from '@/store'
 
   export default {
@@ -63,25 +63,14 @@ import store from '@/store'
     },
 
     created() {
-      this.listOrderCart = JSON.parse(localStorage.getItem('listOrder'));
-      if(this.listOrderCart) {
-        this.listItems = this.listOrderCart[0].cart
-      }
+      this.listItems = this.listOrder[0].cart
     },
 
     watch: {
-      listOrderCart: {
-        handler: function() {
-            this.listItems = this.listOrderCart[0].cart
-        }
-      }
     },
     
     computed: {
       ...mapState(['listOrder']),
-      item() {
-        return this.listItems
-      }
     },
 
   }

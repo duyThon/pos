@@ -48,12 +48,6 @@ export default {
     props: ["listItem"],
     data() {
         return {
-            orderArr: [
-                {name: 'Đơn 1'},
-                {name: 'Đơn 2'},
-                {name: 'Đơn 3'},
-                {name: 'Đơn 4'},
-            ],
             search: '',
             
         }

@@ -42,18 +42,11 @@ export default {
     computed: mapState(['listOrder']),
 
     async created() {
-        this.checkOrder();
+        store.commit('createNewOrder')
         await this.getListItem();
     },
 
     methods: {
-        async checkOrder() {
-            const listOrder = localStorage.getItem('listOrder');
-            if(!listOrder) {
-                store.commit('createNewOrder')
-                console.log(this.$store.state.listOrder)
-            }
-        },
          
         async getListItem() {
             const res = await this.axios.get(api)
