@@ -79,6 +79,7 @@ export default {
 .header {
     background: #2A3042;
     color: #fff;
+    height: 58px;
 }
 
 .avatar {

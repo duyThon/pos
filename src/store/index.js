@@ -20,23 +20,26 @@ export default new Vuex.Store({
           index: 1,
           cart: [],
           partyB:{},
-          payment:{}
+          payment:{},
+          active: true
         }]
         localStorage.setItem('listOrder', JSON.stringify(state.listOrder))
       }
     },
 
     addToCart(state, item) {
-      const cart = JSON.parse(localStorage.getItem('listOrder'))[0].cart
+      const cartList = JSON.parse(localStorage.getItem('listOrder'))
+      const activeCart = cartList.find(cart => cart.active == true)
+      const cart = activeCart.cart
       const checkQuantity = cart.filter(e => e.itemInstance === item.itemInstance)
       if (!checkQuantity.length > 0) {
-        state.listOrder[0].cart.push({
+        state.listOrder[activeCart.index - 1].cart.push({
           ...item,
           quantity: 1
         })
         localStorage.setItem('listOrder', JSON.stringify(state.listOrder))
       } else {
-        state.listOrder[0].cart.map(e => {
+        state.listOrder[activeCart.index - 1].cart.map(e => {
           if(e.itemInstance === item.itemInstance) {
             e.quantity++;
           }
@@ -45,14 +48,35 @@ export default new Vuex.Store({
       }
     },
 
-    updateOrders(state) {
-      this.state.listOrder.push({
-        index : this.state.listOrder.length,
-        cart: [],
-        partyB:{},
-        payment:{}
+    activeCart(state, index) {
+      let cartList = JSON.parse(localStorage.getItem('listOrder'));
+      for( let cart of cartList) {
+        if(cart.index != index) {
+          cart.active = false
+        } else {
+          cart.active = true
+        }
+      }
+      console.log(index);
+      this.commit('saveData',cartList);
+    },
+
+    removeCart(state,index) {
+      let cartList = JSON.parse(localStorage.getItem('listOrder'))
+      cartList = cartList.filter(cart => {
+        return cart.index != index
       })
-      localStorage.setItem('listOrder', this.state.listOrder)
+      console.log(cartList);
+      for(let i in cartList) {
+        cartList[i].index = parseInt(i) + 1
+      }
+      console.log(cartList);
+      this.commit('saveData', cartList)
+    },
+
+    saveData(state, cartList) {
+      state.listOrder = cartList;
+      localStorage.setItem('listOrder', JSON.stringify(cartList))
     }
   },
   actions: {

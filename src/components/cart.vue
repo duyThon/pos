@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { api } from '@/api'
 import { mapState } from 'vuex'
 import store from '@/store'
 
@@ -63,10 +62,15 @@ import store from '@/store'
     },
 
     created() {
-      this.listItems = this.listOrder[0].cart
+      const activeCart = this.listOrder.find(cart => cart.active == true)
+      this.listItems = this.listOrder[activeCart.index - 1].cart
     },
 
     watch: {
+      listOrder: function () {
+        const activeCart = this.listOrder.find(cart => cart.active == true)
+        this.listItems = this.listOrder[activeCart.index - 1].cart
+      }
     },
     
     computed: {
